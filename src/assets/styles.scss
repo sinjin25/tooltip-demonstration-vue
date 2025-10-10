@@ -1,0 +1,340 @@
+/* @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100..900&family=Roboto:ital,wght@0,100..900;1,100..900&family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&display=swap'); */
+// add hina mincho
+@import url('https://fonts.googleapis.com/css2?family=Hina+Mincho&family=Noto+Sans+JP:wght@100..900&family=Roboto:ital,wght@0,100..900;1,100..900&family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&display=swap');
+
+// =====================
+// CSS RESET
+// =====================
+/* 1. Use a more-intuitive box-sizing model */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+/* 2. Remove default margin */
+* {
+    margin: 0;
+}
+
+/* 3. Enable keyword animations */
+@media (prefers-reduced-motion: no-preference) {
+    html {
+        interpolate-size: allow-keywords;
+    }
+}
+
+body {
+    /* 4. Add accessible line-height */
+    line-height: 1.5;
+    /* 5. Improve text rendering */
+    -webkit-font-smoothing: antialiased;
+}
+
+/* 6. Improve media defaults */
+img,
+picture,
+video,
+canvas,
+svg {
+    display: block;
+    max-width: 100%;
+}
+
+/* 7. Inherit fonts for form controls */
+input,
+button,
+textarea,
+select {
+    font: inherit;
+}
+
+/* 8. Avoid text overflows */
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    overflow-wrap: break-word;
+}
+
+/* 9. Improve line wrapping */
+p {
+    text-wrap: pretty;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    text-wrap: balance;
+}
+
+/*
+  10. Create a root stacking context
+*/
+#root,
+#__next {
+    isolation: isolate;
+}
+
+// =======================
+// END CSS RESET
+// =======================
+
+:root {
+    font-size: 15px;
+}
+
+body {
+    /* font-family: "Source Serif 4", "Noto Sans JP", serif; */
+    font-family: "Source Serif 4", "Hina Mincho", serif;
+}
+
+rt {
+    font-family: "Hina Mincho", serif;
+    ruby-align: start;
+}
+
+// ======================
+// Mixin for responsive utilities
+// ======================
+// ======================
+// Breakpoints
+// ======================
+$breakpoints: (
+    sm: 576px,
+    md: 768px,
+    lg: 992px,
+    xl: 1200px,
+    xxl: 1400px
+);
+
+@mixin responsive-utility($class, $properties, $values) {
+
+    // Base (no breakpoint)
+    @each $key, $val in $values {
+        .#{$class}-#{$key} {
+            @if type-of($properties)=='list' {
+                @each $prop in $properties {
+                    #{$prop}: $val;
+                }
+            }
+
+            @else {
+                #{$properties}: $val;
+            }
+        }
+    }
+
+    // Breakpoint variants
+    @each $break, $bpVal in $breakpoints {
+        @media (min-width: $bpVal) {
+            @each $key, $val in $values {
+                .#{$class}-#{$break}-#{$key} {
+                    @if type-of($properties)=='list' {
+                        @each $prop in $properties {
+                            #{$prop}: $val !important;
+                        }
+                    }
+
+                    @else {
+                        #{$properties}: $val !important;
+                    }
+                }
+            }
+        }
+    }
+}
+
+@mixin color-utility($class, $property, $values) {
+    @each $key, $val in $values {
+
+        // base class
+        .#{$class}-#{$key} {
+            #{$property}: #{$val};
+        }
+
+        // lighter hover variant
+        .#{$class}-#{$key}-light-hover {
+            &:hover {
+                #{$property}: hsl(from #{$val} h calc(s + 10) calc(l + 10));
+            }
+        }
+
+        // darker hover variant
+        .#{$class}-#{$key}-dark-hover {
+            &:hover {
+                #{$property}: hsl(from #{$val} h calc(s - 10) calc(l - 10));
+            }
+        }
+    }
+}
+
+:root {
+    --c-primary: hsl(216 98% 52%);
+    --c-secondary: hsl(208 7% 46%);
+    --c-success: hsl(152 69% 31%);
+    --c-danger: hsl(354 70% 54%);
+    --c-warning: hsl(45 100% 51%);
+    --c-info: hsl(190 90% 50%);
+    --c-light: hsl(210 17% 98%);
+    --c-dark: hsl(210 11% 15%);
+    --c-red: hsl(0 75% 60%);
+}
+
+$colors: (
+    'primary': var(--c-primary),
+    'secondary': var(--c-secondary),
+    'success': var(--c-success),
+    'danger': var(--c-danger),
+    'warning': var(--c-warning),
+    'info': var(--c-info),
+    'light': var(--c-light),
+    'dark': var(--c-dark),
+    'red': var(--c-red)
+);
+
+@include color-utility('c', color, $colors);
+@include color-utility('bg', background-color, $colors);
+
+// ======================
+// Spacing scale
+// ======================
+$spacing: (
+    /* 0: 0,
+    1: 0.25rem,
+    2: 0.5rem,
+    3: 0.75rem,
+    4: 1rem,
+    5: 1.25rem,
+    6: 1.5rem,
+    8: 2rem */
+    5: 5px,
+    10: 10px,
+    20: 20px,
+    0: 0px
+);
+
+// ======================
+// Display
+// ======================
+
+$displays: (
+    block: block,
+    inline: inline,
+    inline-block: inline-block,
+    flex: flex,
+    inline-flex: inline-flex,
+    grid: grid,
+    none: none
+);
+
+@include responsive-utility('d', display, $displays);
+
+// ======================
+// block
+// ======================
+
+@include responsive-utility('p', padding, $spacing);
+@include responsive-utility('pt', 'padding-top', $spacing);
+@include responsive-utility('pr', 'padding-right', $spacing);
+@include responsive-utility('pb', 'padding-bottom', $spacing);
+@include responsive-utility('pl', 'padding-left', $spacing);
+@include responsive-utility('px', ('padding-left', 'padding-right'), $spacing);
+@include responsive-utility('py', ('padding-top', 'padding-bottom'), $spacing);
+
+@include responsive-utility('m', 'margin', $spacing);
+@include responsive-utility('mt', 'margin-top', $spacing);
+@include responsive-utility('mr', 'margin-right', $spacing);
+@include responsive-utility('mb', 'margin-bottom', $spacing);
+@include responsive-utility('ml', 'margin-left', $spacing);
+@include responsive-utility('mx', ('margin-left', 'margin-right'), $spacing);
+@include responsive-utility('my', ('margin-top', 'margin-bottom'), $spacing);
+
+@include responsive-utility('br', 'border-radius', (2: 2px,
+        4: 4px,
+        8: 8px));
+
+$position: (
+    r: relative,
+    a: absolute,
+    f: fixed,
+);
+@include responsive-utility('pos', 'position', ($position));
+
+@include responsive-utility('h', 'height', (100: 100%, 50: 50%));
+@include responsive-utility('w', 'width', (100: 100%, 50: 50%));
+
+// ======================
+// Flexbox
+// ======================
+
+$flex-directions: (
+    r: row,
+    rr: row-reverse,
+    c: column,
+    cr: column-reverse
+);
+
+$flex-wraps: (
+    nowrap: nowrap,
+    wrap: wrap,
+    wrap-reverse: wrap-reverse
+);
+
+$justify-content: (
+    s: flex-start,
+    e: flex-end,
+    c: center,
+    sb: space-between,
+    sa: space-around,
+    /*     e: space-evenly */
+);
+
+$align-items: (
+    s: flex-start,
+    e: flex-end,
+    c: center,
+    /* baseline: baseline,
+    stretch: stretch */
+);
+
+@include responsive-utility('gap', 'gap', $spacing);
+@include responsive-utility('fd', 'flex-direction', $flex-directions);
+@include responsive-utility('flex', 'flex-wrap', $flex-wraps);
+@include responsive-utility('jc', 'justify-content', $justify-content);
+@include responsive-utility('ai', 'align-items', $align-items);
+
+// ======================
+// Images
+// ======================
+
+.img-fit-width {
+    width: 100%; // stretch image to fill column width
+    height: auto; // keep aspect ratio
+    display: block; // remove inline gaps under images
+    object-fit: contain; // safe option if you ever set a height later
+}
+
+.img-fit-height {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; // fill cell, crop if needed
+    object-position: center; // keep image centered
+    display: block;
+}
+
+// ======================
+// Utilities
+// ======================
+
+$cursor: (
+    pointer: pointer
+);
+
+@include responsive-utility('cursor', 'cursor', $cursor);
