@@ -79,6 +79,11 @@ onUnmounted(() => {
 .tooltip {
     // since this is a child of work-space-inner, the transition means you might be still in the mouse over state while leaving the bounds of work-space-inner DOWNWARD
     pointer-events: none;
+
+    &[data-show] {
+        pointer-events: none;
+    }
+
     // YOU CANNOT move it outside (as a non-child) because then anytime it moves under your cursor it will stop the hover event, causing the movement to be jerky
     // this is partially an effect of the transition css on transform, which means the movement isn't instant
 }
