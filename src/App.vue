@@ -10,6 +10,8 @@ import Clamp from './components/06/Clamp.vue';
 import XClamp from './components/07/XClamp.vue';
 import ManualUpdate from './components/08/ManualUpdate.vue';
 import NoManualUpdate from './components/08/NoManualUpdate.vue';
+import Drag from './components/09/Drag.vue';
+import DynamicRefDrag from './components/010/DynamicRefDrag.vue';
 
 const exampleToShow = ref('/')
 
@@ -51,6 +53,14 @@ const pages: Page[] = [
         href: '/update',
         text: '08 Force Update'
     },
+    {
+        href: '/drag',
+        text: '09 Drag'
+    },
+    {
+        href: '/dynamic-drag',
+        text: '10 Dynamic Ref Drag w/ composables'
+    },
 ]
 </script>
 
@@ -82,6 +92,12 @@ const pages: Page[] = [
             <NoManualUpdate></NoManualUpdate>
             <ManualUpdate></ManualUpdate>
         </div>
+    </template>
+    <template v-if="exampleToShow === '/drag'">
+        <Drag></Drag>
+    </template>
+    <template v-if="exampleToShow === '/dynamic-drag'">
+        <DynamicRefDrag></DynamicRefDrag>
     </template>
 </template>
 

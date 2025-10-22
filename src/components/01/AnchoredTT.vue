@@ -2,7 +2,7 @@
 import { createPopper, type Instance } from '@popperjs/core'
 import { onMounted, onUnmounted, useTemplateRef } from 'vue';
 
-const anchorRef = useTemplateRef('anchor')
+const anchorRef = useTemplateRef('anchor') //anchorRef.value
 const tooltipRef = useTemplateRef('tt')
 let popper: Instance | null = null
 
